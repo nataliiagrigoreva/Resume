@@ -42,7 +42,7 @@ class ResumeViewController: UIViewController, UICollectionViewDelegate, UICollec
     let locationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "г.Санкт-Петербург"
+        label.text = "г. Санкт-Петербург"
         label.textColor = .gray
         return label
     }()
@@ -52,6 +52,14 @@ class ResumeViewController: UIViewController, UICollectionViewDelegate, UICollec
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.text = "Мои навыки"
+        return label
+    }()
+    
+    let myselfHeaderLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.text = "О себе"
         return label
     }()
     
@@ -81,18 +89,19 @@ class ResumeViewController: UIViewController, UICollectionViewDelegate, UICollec
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.isEditable = false
-        textView.text = "Как iOS разработчик, у меня есть опыт работы со Swift, в Xcode, UIKit, SwiftUI и Core Data, WidgetKit, Push notifications, SQL. Моя страсть к разработке мобильных приложений побуждает меня постоянно совершенствовать свои технические навыки и делать карьеру в индустрии технологий. У меня есть опыт работы в командной среде, которая придерживается принципов методологии Agile, и я горю желанием сотрудничать с другими разработчиками и командами для создания уникальных и инновационных мобильных приложений для платформы iOS. Я стремлюсь использовать свой опыт и знания, чтобы приносить пользу компании и помогать достигать целей в разработке мобильных приложений.ь"
+        textView.font = UIFont.systemFont(ofSize: 14)
+        textView.text = "Как iOS разработчик, у меня есть опыт работы со Swift, в Xcode, UIKit, SwiftUI и Core Data, WidgetKit, Push notifications, SQL. Моя страсть к разработке мобильных приложений побуждает меня постоянно совершенствовать свои технические навыки и делать карьеру в индустрии технологий. У меня есть опыт работы в командной среде, которая придерживается принципов методологии Agile, и я горю желанием сотрудничать с другими разработчиками и командами для создания уникальных и инновационных мобильных приложений для платформы iOS. Я стремлюсь использовать свой опыт и знания, чтобы приносить пользу компании и помогать достигать целей в разработке мобильных приложений."
         return textView
     }()
     
     var skills: [String] = ["iOS Development", "Swift", "Objective-C", "Xcode"]
     var isEditingSkills: Bool = false {
-            didSet {
-                skillsCollectionView.reloadData()
-                updateButtonVisibility()
-            }
+        didSet {
+            skillsCollectionView.reloadData()
+            updateButtonVisibility()
         }
-
+    }
+    
     let skillsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -116,10 +125,10 @@ class ResumeViewController: UIViewController, UICollectionViewDelegate, UICollec
         setupUI()
         setupCollectionView()
         setupButtons()
-   
+        
         editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
-
+        
         skillsCollectionView.register(SkillsCollectionViewCell.self, forCellWithReuseIdentifier: SkillsCollectionViewCell.identifier)
         skillsCollectionView.register(AddSkillCollectionViewCell.self, forCellWithReuseIdentifier: "AddSkillCell")
     }
@@ -164,7 +173,7 @@ class ResumeViewController: UIViewController, UICollectionViewDelegate, UICollec
         view.addSubview(skillsHeaderLabel)
         view.addSubview(editButton)
         view.addSubview(saveButton)
-        view.addSubview(skillsCollectionView)
+        view.addSubview(myselfHeaderLabel)
         view.addSubview(aboutMeTextView)
         view.addSubview(skillsContainerView)
         
@@ -206,26 +215,31 @@ class ResumeViewController: UIViewController, UICollectionViewDelegate, UICollec
             skillsContainerView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16),
             skillsContainerView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -16),
             skillsContainerView.topAnchor.constraint(equalTo: skillsHeaderLabel.bottomAnchor, constant: 16),
-            skillsContainerView.bottomAnchor.constraint(lessThanOrEqualTo: aboutMeTextView.topAnchor, constant: -16),
             
             skillsCollectionView.leadingAnchor.constraint(equalTo: skillsContainerView.leadingAnchor),
             skillsCollectionView.trailingAnchor.constraint(equalTo: skillsContainerView.trailingAnchor),
             skillsCollectionView.topAnchor.constraint(equalTo: skillsContainerView.topAnchor),
             skillsCollectionView.bottomAnchor.constraint(equalTo: skillsContainerView.bottomAnchor),
-   
-            aboutMeTextView.topAnchor.constraint(equalTo: skillsCollectionView.bottomAnchor, constant: 16),
-                        aboutMeTextView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -16),
             
-                        skillsCollectionView.heightAnchor.constraint(equalToConstant: calculateSkillsCollectionViewHeight()),
-                    ])
+            myselfHeaderLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16),
+            myselfHeaderLabel.topAnchor.constraint(equalTo: skillsCollectionView.bottomAnchor, constant: 16),
+            
+            aboutMeTextView.topAnchor.constraint(equalTo: myselfHeaderLabel.bottomAnchor, constant: 16),
+            aboutMeTextView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -16),
+            aboutMeTextView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16),
+            aboutMeTextView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -16),
+            
+            
+            skillsCollectionView.heightAnchor.constraint(equalToConstant: calculateSkillsCollectionViewHeight()),
+        ])
     }
     
     private func calculateSkillsCollectionViewHeight() -> CGFloat {
-            let numberOfRows = ceil(CGFloat(skills.count) / CGFloat(maxSkillsRowCount))
-            let cellHeight: CGFloat = 30
-            let interItemSpacing: CGFloat = 8
-            return (cellHeight * numberOfRows) + (interItemSpacing * (numberOfRows - 1))
-        }
+        let numberOfRows = ceil(CGFloat(skills.count) / CGFloat(maxSkillsRowCount))
+        let cellHeight: CGFloat = 30
+        let interItemSpacing: CGFloat = 8
+        return (cellHeight * numberOfRows) + (interItemSpacing * (numberOfRows - 1))
+    }
     private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -301,8 +315,8 @@ class ResumeViewController: UIViewController, UICollectionViewDelegate, UICollec
     // MARK: - Collection View Data Source
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return isEditingSkills ? skills.count : skills.count + 1
-        }
+        return isEditingSkills ? skills.count : skills.count + 1
+    }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if isEditingSkills && indexPath.item < skills.count {
