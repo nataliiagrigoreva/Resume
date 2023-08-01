@@ -10,12 +10,14 @@ import UIKit
 class SkillsCollectionViewCell: UICollectionViewCell {
     static let identifier = "SkillsCollectionViewCell"
     
+    
     let skillLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 1
         return label
     }()
+    
     
     let deleteButton: UIButton = {
         let button = UIButton(type: .system)

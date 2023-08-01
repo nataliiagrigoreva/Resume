@@ -81,7 +81,7 @@ class ResumeViewController: UIViewController, UICollectionViewDelegate, UICollec
     let saveButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(named: "save_icon"), for: .normal)
+        button.setImage(UIImage(named: ""), for: .normal)
         return button
     }()
     
@@ -120,6 +120,9 @@ class ResumeViewController: UIViewController, UICollectionViewDelegate, UICollec
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+    
+        skillsCollectionView.delegate = self
+        skillsCollectionView.dataSource = self
         
         setupNavigationBar()
         setupUI()
@@ -240,6 +243,7 @@ class ResumeViewController: UIViewController, UICollectionViewDelegate, UICollec
         let interItemSpacing: CGFloat = 8
         return (cellHeight * numberOfRows) + (interItemSpacing * (numberOfRows - 1))
     }
+    
     private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
